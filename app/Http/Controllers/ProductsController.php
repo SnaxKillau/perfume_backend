@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 class ProductsController extends Controller
 {
     public function index(){
-        $products = Products::with("image")->get();
+        $products = Products::with(["image" , "brands"])->get();
         
-       
+        foreach($products as $product){
+            $product['brand'] = $product->brands->name;
+        }
         return response()->json([
             "data"=>$products
         ]);
@@ -20,8 +22,10 @@ class ProductsController extends Controller
         $product  = Products::create([
             "name"=> $request->name,
             "type"=> $request->type,
-            "brand_id"=> $request->brand_id,
-            "category_id"=> $request->category_id,
+            "price" => $request->price,
+            "brands_id"=> $request->brands_id,
+            "categories_id"=> $request->categories_id,
+            "availableUnit" => $request->availableUnit
         ]);
         if ($request->hasFile('image')){
             $image = $request->file('image') ;

@@ -32,3 +32,4 @@ Route::get("/brand" , [BrandsController::class , 'index']);
 Route::post("/brand" , [BrandsController::class , 'create']);
 Route::get("/product" , [ProductsController::class , 'index']);
 Route::post("/product" , [ProductsController::class , 'create']);
+Route::get("/productCategory/{id}" , [CategoriesController::class , 'products']);

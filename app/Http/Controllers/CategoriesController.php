@@ -22,4 +22,10 @@ class CategoriesController extends Controller
             "data"=>$category
         ]);
     }
+    public function products ($id){
+        $category = Categories::find($id)->with('products')->get();
+        return response()->json([
+            "data"=>$category
+        ]);
+    }
 }
