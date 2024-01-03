@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriesController extends Controller
 {
     public function index(){
-        $categories = Categories::all()->sortByDesc('created_at');
 
+        $categories = Categories::all()->sortByDesc('created_at');
+       
         return response()->json([
             "data"=>$categories
         ]);
@@ -23,9 +25,10 @@ class CategoriesController extends Controller
         ]);
     }
     public function products ($id){
-        $category = Categories::find($id)->with('products')->get();
+        $categories = Categories::find($id)->with('products.image')->get();
+    
         return response()->json([
-            "data"=>$category
+            "data"=>$categories
         ]);
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("type");
             $table->integer("price");
             $table->integer("availableUnit");
+            $table->text("decription");
             $table->unsignedBigInteger('brands_id');
             $table->foreign('brands_id')->references('id')->on('brands')->onDelete('cascade');
             $table->unsignedBigInteger('categories_id');

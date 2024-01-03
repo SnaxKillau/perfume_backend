@@ -26,10 +26,18 @@ Route::post("/login" , [AuthController::class, 'login']);
 
 Route::post("/logout" , [AuthController::class, 'logout']);
 
-Route::get("/category" , [CategoriesController::class , 'index']);
-Route::post("/category" , [CategoriesController::class , 'create']);
-Route::get("/brand" , [BrandsController::class , 'index']);
-Route::post("/brand" , [BrandsController::class , 'create']);
-Route::get("/product" , [ProductsController::class , 'index']);
-Route::post("/product" , [ProductsController::class , 'create']);
-Route::get("/productCategory/{id}" , [CategoriesController::class , 'products']);
+Route::middleware(['auth:api'])->group(function(){
+
+    Route::get("/category" , [CategoriesController::class , 'index']);
+    Route::post("/category" , [CategoriesController::class , 'create']);
+    Route::get("/brand" , [BrandsController::class , 'index']);
+    Route::post("/brand" , [BrandsController::class , 'create']);
+    Route::get("/product" , [ProductsController::class , 'index']);
+    Route::post("/product" , [ProductsController::class , 'create']);
+    Route::get("/productCategory/{id}" , [CategoriesController::class , 'products']);
+    Route::get("/product/{id}" , [ProductsController::class , 'show']);
+});
+
+ 
+
+

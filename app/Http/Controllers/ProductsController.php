@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Images;
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
     public function index(){
+    
         $products = Products::with(["image" , "brands"])->get();
         
         foreach($products as $product){
@@ -25,7 +27,8 @@ class ProductsController extends Controller
             "price" => $request->price,
             "brands_id"=> $request->brands_id,
             "categories_id"=> $request->categories_id,
-            "availableUnit" => $request->availableUnit
+            "availableUnit" => $request->availableUnit,
+            "decription" => $request->decription
         ]);
         if ($request->hasFile('image')){
             $image = $request->file('image') ;
@@ -48,6 +51,16 @@ class ProductsController extends Controller
          
         return response()->json([
             "data"=>$product
+        ]);
+    }
+    public function show($id){
+        $products = Products::with('image', 'brands')->find($id);
+    
+    
+        $products['brand'] = $products->brands->name;
+        
+        return response()->json([
+            "data"=>$products
         ]);
     }
 }

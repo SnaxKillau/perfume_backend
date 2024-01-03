@@ -15,15 +15,16 @@ class Products extends Model
         "brands_id",
         "categories_id",
         "price",
-        "availableUnit"
+        "availableUnit",
+        "decription"
     ];
+
     protected $hidden = [
         "brands"
     ];
 
-
     public function brands(){
-       return $this->belongsTo(Brands::class , "brand_id");
+       return $this->belongsTo(Brands::class , "brands_id");
     }
     public function categories(){
         return $this->belongsTo(Categories::class);

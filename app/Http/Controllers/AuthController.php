@@ -58,7 +58,7 @@ class AuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $token = $user->createToken('TOKEN')->accessToken;
                 $cookie = cookie("key", $token, 60 * 720);
-                return response(['user' => $user, 'token' => $token])->withCookie($cookie);
+                return response(['user' => $user, 'token' => $token , 'status'=> 200])->withCookie($cookie);
             } else {
                 $response = ["message" => "Password mismatch"];
                 return response($response, 422);
