@@ -36,6 +36,9 @@ Route::middleware(['auth:api'])->group(function(){
     Route::post("/product" , [ProductsController::class , 'create']);
     Route::get("/productCategory/{id}" , [CategoriesController::class , 'products']);
     Route::get("/product/{id}" , [ProductsController::class , 'show']);
+    Route::post("/addToBag/{id}" , [ProductsController::class , 'addToBag']);
+    Route::get("/bag", [ProductsController::class , "bag"]);
+    Route::delete("/pay" , [ProductsController::class , "payment"]);
 });
 
  

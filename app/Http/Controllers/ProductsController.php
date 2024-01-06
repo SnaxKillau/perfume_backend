@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Images;
 use App\Models\Products;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -63,4 +64,87 @@ class ProductsController extends Controller
             "data"=>$products
         ]);
     }
+    public function addToBag($id)
+{
+    // Get the authenticated user
+    $loggedInUser = auth()->user();
+
+    // Find the product with the 'image' and 'brands' relationships loaded
+    $product = Products::with('image', 'brands')->findOrFail($id);
+
+    if ($loggedInUser && $product) {
+        // Attach the product to the user
+        $data = $loggedInUser->products()->attach($product->id);
+
+        // Retrieve the user's products with 'image' and 'brands' relationships loaded
+        $groupedProducts = $loggedInUser->products()->with('image', 'brands')->get();
+
+        $uniqueProducts = [];
+        $count = [];
+
+        foreach ($groupedProducts as $groupedProduct) {
+            $currentProductId = $groupedProduct->id;
+
+            if (!isset($count[$currentProductId])) {
+                // First occurrence, add to uniqueProducts and initialize count
+                $uniqueProducts[] = $groupedProduct;
+                $count[$currentProductId] = 1;
+            } else {
+                // Duplicate occurrence, increment count
+                $count[$currentProductId]++;
+            }
+        }
+
+        // Add count to each unique product
+        foreach ($uniqueProducts as $uniqueProduct) {
+            $uniqueProduct["count"] = $count[$uniqueProduct->id];
+        }
+    } else {
+        return response()->json(["error" => "User or Product not found!"], 404);
+    }
+
+    return response()->json([
+        "data" => $uniqueProducts
+    ]);
+}
+public function bag(){
+    $loggedInUser = auth()->user();
+    
+    // Retrieve the user's products with 'image' and 'brands' relationships loaded
+    $groupedProducts = $loggedInUser->products()->with('image', 'brands')->get();
+
+    $uniqueProducts = [];
+    $count = [];
+
+    foreach ($groupedProducts as $groupedProduct) {
+        $currentProductId = $groupedProduct->id;
+
+        if (!isset($count[$currentProductId])) {
+            // First occurrence, add to uniqueProducts and initialize count
+            $uniqueProducts[] = $groupedProduct;
+            $count[$currentProductId] = 1;
+        } else {
+            // Duplicate occurrence, increment count
+            $count[$currentProductId]++;
+        }
+    }
+
+    // Add count to each unique product
+    foreach ($uniqueProducts as $uniqueProduct) {
+        $uniqueProduct["count"] = $count[$uniqueProduct->id];
+    }
+    return response()->json([
+        "data" => $uniqueProducts
+    ]);
+    
+}
+public function payment(){
+    $loggedInUser = auth()->user();
+    $loggedInUser->products()->detach();
+    return response()->json([
+        "data"=>[]
+    ]);
+
+}
+   
 }
