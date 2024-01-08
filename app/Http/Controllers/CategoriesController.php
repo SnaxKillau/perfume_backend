@@ -12,8 +12,16 @@ class CategoriesController extends Controller
 
         $categories = Categories::all()->sortByDesc('created_at');
        
+        $formattedCategories = $categories->map(function ($category) {
+            return [
+                'id' => $category->id,
+                'name' => $category->name,
+                'created_at' => $category->created_at,
+                'updated_at' => $category->updated_at,
+            ];
+        });
         return response()->json([
-            "data"=>$categories
+            'data' => $formattedCategories->values()
         ]);
     }
     public function create (Request $request) {
