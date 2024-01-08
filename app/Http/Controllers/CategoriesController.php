@@ -33,7 +33,10 @@ class CategoriesController extends Controller
         ]);
     }
     public function products ($id){
-        $categories = Categories::find($id)->with('products.image')->get();
+        $categories = Categories::with(['products' => function ($query) use ($id) {
+            $query->where('categories_id', $id)->with('image');
+        }])->where('id', $id)->get();
+
     
         return response()->json([
             "data"=>$categories
