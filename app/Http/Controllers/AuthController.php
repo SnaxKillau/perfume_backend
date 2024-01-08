@@ -76,4 +76,11 @@ class AuthController extends Controller
         });
         return response(['message' => 'logout']);
     }
+    public function profile(){
+        $loggedInUser = auth()->user();
+
+        return response()->json([
+            "data"=>$loggedInUser
+        ]);
+    }
 }

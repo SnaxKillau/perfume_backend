@@ -39,6 +39,7 @@ Route::middleware(['auth:api'])->group(function(){
     Route::post("/addToBag/{id}" , [ProductsController::class , 'addToBag']);
     Route::get("/bag", [ProductsController::class , "bag"]);
     Route::delete("/pay" , [ProductsController::class , "payment"]);
+    Route::get("/profile" , [AuthController::class  , "profile"]);
 });
 
  
