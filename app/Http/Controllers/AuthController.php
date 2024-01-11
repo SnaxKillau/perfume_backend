@@ -83,4 +83,16 @@ class AuthController extends Controller
             "data"=>$loggedInUser
         ]);
     }
+    public function update(Request $request){
+
+        $loggedInUser = auth()->user();
+        $user = User::find($loggedInUser->id);
+        $data = $user->update($request->all());
+
+        return response()->json([
+            "message" => $data
+        ]);
+        
+
+    }
 }

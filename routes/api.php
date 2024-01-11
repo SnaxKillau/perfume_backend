@@ -40,6 +40,8 @@ Route::middleware(['auth:api'])->group(function(){
     Route::get("/bag", [ProductsController::class , "bag"]);
     Route::delete("/pay" , [ProductsController::class , "payment"]);
     Route::get("/profile" , [AuthController::class  , "profile"]);
+    Route::post("/updateProfile" , [AuthController::class , "update"]);
+    Route::post("/logout" , [AuthController::class , "logout"]);
 });
 
  

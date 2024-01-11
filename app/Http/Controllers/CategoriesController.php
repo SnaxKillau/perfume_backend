@@ -33,11 +33,13 @@ class CategoriesController extends Controller
         ]);
     }
     public function products ($id){
-        $categories = Categories::with(['products' => function ($query) use ($id) {
-            $query->where('categories_id', $id)->with('image');
-        }])->where('id', $id)->get();
-
-    
+        $categories = Categories::with(['products.brands', 'products.image'])->where('id', $id)->get();
+        foreach($categories as $category){
+            $categoryProducts = $category->products;
+            foreach($categoryProducts as $categoryProduct){
+                $categoryProduct["brand"] = $categoryProduct->brands->name;
+            }
+        }
         return response()->json([
             "data"=>$categories
         ]);
